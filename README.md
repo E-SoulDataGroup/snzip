@@ -35,6 +35,7 @@ the location by `--with-snappy` as follows.
 
     # install snappy
     tar xvfz snappy-1.1.3.tar.gz
+    yum install -y gcc gcc-c++ autoconf automake libtool  cmake openssl-devel
     cd snappy-1.1.3
     ./configure --prefix=/usr/local/snappy
     make
@@ -68,9 +69,34 @@ To use source code in the github repository.
     git clone git://github.com/kubo/snzip.git
     cd snzip
     ./autogen.sh
-    ./configure
-    make
-    make install
+    此时会出现autoconf的版本错误，需要更新autoconf
+    查看版本
+     rpm -qf /usr/bin/autoconf
+     下载安装新版本
+     rpm -e --nodeps autoconf-2.63 
+     wget ftp://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz 
+     tar -zxvf autoconf-2.69.tar.gz
+     cd autoconf-2.69
+     ./configure --prefix=/usr/  
+     make && make install 
+     查看版本
+    /usr/bin/autoconf -V  
+    
+    继续安装snzip
+
+   ./autogen.sh 
+   ./configure --with-snappy=/root/software/snappy  --prefix=/root/software/snzip
+   make && make install
+   安装完成
+   snzip只依赖于snappy的lib库
+   如果使用snzip出现error while loading shared libraries:libsnappy.so.1: cannot open shared object file: No such file or directory
+   
+   需要指定lib库
+   执行下面命令即可
+   export LD_LIBRARY_PATH=/{Your path}/lib:$LD_LIBRARY_PATH 
+   
+   
+    
 
 ### Install a Windows package.
 
